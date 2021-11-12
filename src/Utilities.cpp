@@ -1,4 +1,5 @@
 #include <sys\stat.h>
+#include <windows.h>
 
 #include "Utilities.h"
 
@@ -68,4 +69,20 @@ size_t strLenWithoutSpaces(char* countingString) {
     }
 
     return counter;
+}
+
+uint32_t MyFGets(int8_t buffer[], int32_t bufSize, FILE* stream) {
+    assert(buffer != nullptr);
+    printf("In MyFGets\n");
+
+    int8_t  curChar     = 0;
+    int32_t charsAmount = 0;
+    
+    while(((curChar = (int8_t)fgetc(stream)) != '\n') &&
+          (charsAmount < bufSize - 1)) {
+        buffer[charsAmount++] = curChar;
+    }
+    buffer[charsAmount++] = '|';
+
+    return charsAmount;
 }

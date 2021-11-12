@@ -8,7 +8,7 @@
 #include <ctype.h>
 
 struct String {
-    uint8_t *value;
+    int8_t *value;
     size_t length;
 
     uint32_t firstSpaceIdx;
@@ -18,7 +18,7 @@ struct String {
 
 struct Text {
     String *strings;
-    uint8_t *buffer;
+    int8_t *buffer;
     size_t bufSize;
     uint32_t strAmount;
 };
@@ -32,7 +32,7 @@ struct Text {
 //! @note You should use all functions from this file to fill up Text structure properly
 //-------------------------------------------------------------------------------------------------------
 
-void ReadTextFromFile(struct Text *text, const char* input);
+bool ReadTextFromFile(struct Text *text, const char* input);
 
 //-------------------------------------------------------------------------------------------------------
 //! Counts strings in structure's buffer and set structure's strAmount.
@@ -79,4 +79,5 @@ void PrintStrings(const struct Text*, FILE* output);
 //-------------------------------------------------------------------------------------------------------
 
 void DestroyText(struct Text*);
+
 #endif

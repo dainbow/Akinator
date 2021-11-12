@@ -7,7 +7,7 @@
 
 #include "Text.h"
 
-typedef uint8_t* TreeElem;
+typedef int8_t* TreeElem;
 #define TREE_TYPE "%s"
 
 #define _ENABLE_PTR_ADRESSES_VIEW_ 0
@@ -34,11 +34,18 @@ struct Node {
 
 struct Tree {
     Node* root;
+
     Text qbase;
+
+    int8_t* unsavedQuestions;
+    int32_t bufLen;
 };
 
 const int32_t MAX_RECURSION_DEPTH = 1000;
+const int32_t MAX_BUFFER_SIZE     = 8000;
+
 const char G_STANDART_NAME[] = "graph";
+
 
 #define TreeCtor(tree)    \
     Tree tree;            \

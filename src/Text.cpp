@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <io.h>
 #include <string.h>
+#include <windows.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -8,20 +9,22 @@
 #include "Text.h"
 #include "Utilities.h"
 
-void ReadTextFromFile(Text *text, const char* inputFile) {
+bool ReadTextFromFile(Text *text, const char* inputFile) {
     assert(text != nullptr);
     assert(inputFile != nullptr);
 
     int input = open(inputFile, O_RDONLY | O_BINARY, 0);
-    assert(input != -1);
+    if (input == -1)
+        return 0;
 
     text->bufSize = CountFileSize(input);
-    text->buffer = (uint8_t*)calloc(text->bufSize + 1, sizeof(text->buffer[0]));
+    text->buffer = (int8_t*)calloc(text->bufSize + 1, sizeof(text->buffer[0]));
     assert(text->buffer != nullptr);
 
     read(input, text->buffer, (uint32_t)text->bufSize);
 
     close(input);
+    return 1;
 }
 
 void CountStrAmount(struct Text *text) {
@@ -40,7 +43,7 @@ void CountStrAmount(struct Text *text) {
 void FillStrings(struct Text *text) {
     assert(text != nullptr);
 	
-	text->strings = (struct String*)calloc(text->strAmount + 1, sizeof(text->strings[0]));
+	text->strings = (String*)calloc(text->strAmount + 1, sizeof(text->strings[0]));
     assert(text->strings != nullptr);
 
     text->strings[0].value = &text->buffer[0];
@@ -69,8 +72,8 @@ void ProcessStrings(Text* text) {
                 text->strings[curString].length = curChar + 1;
             case '\r':
             case '\n':
-                text->strings[curString].value[curChar] = '\0';
                 text->strings[curString].value[curChar + 1] = '\0';
+                text->strings[curString].value[curChar] = '\0';
                 break;
             case ' ':
                 break;    
@@ -108,6 +111,10 @@ void ProcessStrings(Text* text) {
                 if (curChar > lastStrNotSpace)
                     text->strings[curString].value[curChar] = '\0';
             }
+            else if ((curChar != 0) && (text->strings[curString].value[curChar] == '}')) {
+                text->strings[curString].value[curChar] = '\0';
+                text->strings[curString].length--;
+            }
             else if (text->strings[curString].firstSpaceIdx != 0) {
                 text->strings[curString].lenOfArgs += 1;
             }
@@ -143,4 +150,3 @@ void DestroyText(struct Text *text) {
     free(text->strings);
     text->strings = nullptr;
 }
-

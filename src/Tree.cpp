@@ -6,6 +6,9 @@ void TreeCtor_(Tree* tree) {
 
     tree->qbase = {};
     tree->root = (Node*)calloc(1, sizeof(tree->root[0]));
+
+    tree->unsavedQuestions = (int8_t*)calloc(MAX_BUFFER_SIZE, sizeof(tree->unsavedQuestions[0]));
+    tree->bufLen           = 0;
 }
 
 void TreeDtor(Tree* tree) {
@@ -45,8 +48,7 @@ void PrintTreeNodes(Node* root, FILE* output) {
     static Node* pointerAnchor = root;
 
     curNodeNumber++;    
-    printf("Cur Recursion depth is %d\n", curRecursionDepth);
-
+    
     if (rankArray[curRecursionDepth] == 0) {
         rankArray[curRecursionDepth] = root - pointerAnchor;
     }

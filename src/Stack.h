@@ -38,8 +38,8 @@
 typedef uint32_t canary;
 typedef uint64_t hashValue;
 
-typedef uint8_t* StackElem;
-const char NAME_OF_STACK_TYPE[] = "uint8_t*";
+typedef int8_t* StackElem;
+const char NAME_OF_STACK_TYPE[] = "int8_t*";
 
 #if (STACK_DEBUG == HIGH_LEVEL)
     const uint32_t SHIFT = sizeof(canary) + 2 * sizeof(hashValue);
