@@ -1,8 +1,5 @@
 #pragma once
 
-#define TX_USE_SPEAK
-#include "TXLib.h"
-
 #include <assert.h>
 #include <locale.h>
 
@@ -29,6 +26,9 @@ void GetFinalAnswer(int8_t answerString[]);
 void GetGameAnswer(int8_t answerString[]);
 
 void PlayGame(Tree* tree);
+void PlayDescription(Tree* akinatorTree);
+void PlayCompartion(Tree* akinatorTree);
+
 void AkinatorTreeBypass(Node* node, Stack* backtrackStack, Stack* nodeHistoryStack);
 
 void SaveTreeBase(Tree* tree);

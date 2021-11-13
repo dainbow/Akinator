@@ -15,17 +15,23 @@ char* MakeTreeGraph(Node* tree, const char name[]) {
     fprintf(output, "\tnewrank=true;\n");
     PrintTreeNodes(tree, output);
     fprintf(output, "}\n");
-
-    char command[MAX_COMMAND_NAME] = "";
-    char del[MAX_COMMAND_NAME]     = "";
     fclose(output);
 
-    sprintf(command, "%s %s -Tpng -O", 
-            DOT_EXE_PATH, endName);
-    sprintf(del, "del %s", endName);
+    char command[MAX_COMMAND_NAME] = "";
+    char cd[MAX_COMMAND_NAME]      = "";
+    char del[MAX_COMMAND_NAME]     = "";
+    char start[MAX_COMMAND_NAME]   = "";
 
+    sprintf(cd, "ubuntu run cd %s", GRAPH_PATH_FOR_UBUNTU);
+    sprintf(command, "ubuntu run dot '%s' -Tpng -O", endName);
+    sprintf(del, "ubuntu run rm '%s'", endName);
+    sprintf(start, "start %s%s", endName, G_OUTPUT_FORMAT);
+    
+    system(cd);
     system(command);
-    //system(del);
+    system(del);
+    system(start);
+    
 
     return endName;
 

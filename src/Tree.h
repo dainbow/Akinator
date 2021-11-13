@@ -24,7 +24,6 @@ typedef int8_t* TreeElem;
     #define RIGHT_BRANCH_VALUE curNodeNumber
 #endif
 
-
 struct Node {
     TreeElem data;
 

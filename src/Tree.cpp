@@ -1,5 +1,6 @@
 #include "Tree.h"
 #include "Graph.h"
+#include "Akinator.h"
 
 void TreeCtor_(Tree* tree) {
     assert(tree != nullptr);
@@ -47,6 +48,9 @@ void PrintTreeNodes(Node* root, FILE* output) {
     static int32_t curNodeNumber = 0;
     static Node* pointerAnchor = root;
 
+    char dataConverted[MAX_NODE_DATA_LENGTH] = "";
+    Convert1251ToUtf8((const char*)root->data, dataConverted);
+
     curNodeNumber++;    
     
     if (rankArray[curRecursionDepth] == 0) {
@@ -77,7 +81,7 @@ void PrintTreeNodes(Node* root, FILE* output) {
                 "<TD PORT = \"r%d\">" RIGHT_BRANCH "</TD>"
             "</TR>"
             "</TABLE>>];\n",
-            root - pointerAnchor, root->data, 
+            root - pointerAnchor, dataConverted, 
             curNodeNumber, LEFT_BRANCH_VALUE, 
             curNodeNumber, RIGHT_BRANCH_VALUE);
 
@@ -104,7 +108,7 @@ void PrintTreeNodes(Node* root, FILE* output) {
                 "<TD> 0 </TD>"
             "</TR>"
             "</TABLE>>];\n", 
-            root - pointerAnchor, root->data);
+            root - pointerAnchor, dataConverted);
     }
 }
 

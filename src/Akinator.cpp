@@ -1,19 +1,19 @@
-#include "Akinator.h"
+#define TX_USE_SPEAK
+#include "TXLib.h"
 
-#include <windows.h>
+#include "Akinator.h"
 
 int main() {
     TreeCtor(akinatorTree);
-    system("chcp 866");
+    system("chcp 1251");
 
     if (ReadTreeFromBase(&akinatorTree) == 0) {
         AskForNode(&akinatorTree, akinatorTree.root, 0);
     }
-    MakeTreeGraph(akinatorTree.root, G_STANDART_NAME);
 
     int32_t curCommand = 0;
     while (TRUE) {
-        txSpeak("\vВведите режим игры:\n"
+        printf("Введите режим игры:\n"
                "   1 - игра в Акинатора\n"
                "   2 - выдать описание какого-то персонажа\n"
                "   3 - вывести сходство двух объектов\n"
@@ -29,64 +29,12 @@ int main() {
         case 1:
             PlayGame(&akinatorTree);
             break;
-        case 2: {
-            txSpeak("\vВведите песонажа, чьё описание вы хотите получить\n");
-            StackCtor(descriptionStack);
-
-            int8_t person[MAX_NODE_DATA_LENGTH]    = "";
-            int8_t converted[2 * MAX_NODE_DATA_LENGTH] = "";
-
-            fflush(stdin);
-            MyFGetsForOneItem(person, MAX_NODE_DATA_LENGTH, stdin);
-
-            Convert1251ToUtf8((const char*)person, (char*)converted);
-
-            GiveDescription(akinatorTree.root, converted, &descriptionStack);
-            if (StackPop(&descriptionStack) != (StackElem)1) {
-                txSpeak("\vТы ввёл несуществующего персонажа, тупой человек\n");
-            }
-            else {
-                PrintDescription(&descriptionStack, converted);
-            }
-
-            StackDtor(&descriptionStack);
+        case 2: 
+            PlayDescription(&akinatorTree);
             break;
-        }
-        case 3: {
-            txSpeak("\vВведите двух персонажей через enter, чтобы узнать, в чём они похожи, а в чём различны");
-            StackCtor(descriptionStack1);
-            StackCtor(descriptionStack2);
-
-            int8_t person1[MAX_NODE_DATA_LENGTH] = "";
-            int8_t person2[MAX_NODE_DATA_LENGTH] = "";
-
-            int8_t converted1[2 * MAX_NODE_DATA_LENGTH] = "";
-            int8_t converted2[2 * MAX_NODE_DATA_LENGTH] = "";
-
-            fflush(stdin);
-            MyFGetsForOneItem(person1, MAX_NODE_DATA_LENGTH, stdin);
-
-            fflush(stdin);
-            MyFGetsForOneItem(person2, MAX_NODE_DATA_LENGTH, stdin);
-
-            Convert1251ToUtf8((const char*)person1, (char*)converted1);
-            Convert1251ToUtf8((const char*)person2, (char*)converted2);
-
-            GiveDescription(akinatorTree.root, converted1, &descriptionStack1);
-            GiveDescription(akinatorTree.root, converted2, &descriptionStack2);
-
-            if ((StackPop(&descriptionStack1) != (StackElem)1) ||
-                (StackPop(&descriptionStack2) != (StackElem)1)) {
-                txSpeak("\vКакой-то персонаж, из тех, которые ты ввёл, не существует, мешок костей\n");
-            }
-            else {
-                PrintDescriptionComparation(&descriptionStack1, &descriptionStack2, converted1, converted2);
-            }
-
-            StackDtor(&descriptionStack1);
-            StackDtor(&descriptionStack2);
+        case 3: 
+            PlayCompartion(&akinatorTree);
             break;
-        }
         case 4:
             MakeTreeGraph(akinatorTree.root, G_STANDART_NAME);
             break;
@@ -181,66 +129,32 @@ void AskForNode(Tree* tree, Node* node, Node* preNode) {
     assert(node != nullptr);
 
     if (tree->root == node)
-        txSpeak("\vБаза вопросов не найдена, введите первый отличительный признак, "
+        printf("База вопросов не найдена, введите первый отличительный признак, "
             "объект, обладающий им, и объект, не обладающий им.\n"
             "(После каждого случая введите enter)\n");
     else
-        txSpeak("\vВведите признак загаданного вами персонажа, который отличает его от %s.\n"
+        printf("Введите признак загаданного вами персонажа, который отличает его от %s.\n"
                "После, нажмите enter и введите загаданного изначально персонажа\n", node->data);
 
-    int8_t* buffer = (int8_t*)calloc(MAX_BUFFER_SIZE, sizeof(buffer[0]));
-    int32_t curBufLen  = 0;
     Node* saveLastNode = 0;
-
     if (tree->root != node) {
         saveLastNode = node;
-        node = MakeNewNode((TreeElem)0);
+        node = MakeNewNode((TreeElem)(tree->unsavedQuestions + tree->bufLen));
     }
 
-    node->data += curBufLen;
-
     fflush(stdin);
-    curBufLen  += MyFGets(buffer + curBufLen, MAX_NODE_DATA_LENGTH, stdin);
+    node->data     = tree->unsavedQuestions + tree->bufLen;
+    tree->bufLen  += MyFGetsForOneItem(tree->unsavedQuestions + tree->bufLen, MAX_NODE_DATA_LENGTH, stdin);
 
-    node->left = MakeNewNode((TreeElem)(0) + curBufLen);
-    curBufLen  += MyFGets(buffer + curBufLen, MAX_NODE_DATA_LENGTH, stdin);
+    node->left     = MakeNewNode((TreeElem)(tree->unsavedQuestions + tree->bufLen));
+    tree->bufLen  += MyFGetsForOneItem(tree->unsavedQuestions + tree->bufLen, MAX_NODE_DATA_LENGTH, stdin);
 
     if (tree->root == node) {
-        node->right  = MakeNewNode((TreeElem)(0) + curBufLen);
-        curBufLen  += MyFGets(buffer + curBufLen, MAX_NODE_DATA_LENGTH, stdin);
+        node->right  = MakeNewNode((TreeElem)(tree->unsavedQuestions + tree->bufLen));
+        tree->bufLen  += MyFGetsForOneItem(tree->unsavedQuestions + tree->bufLen, MAX_NODE_DATA_LENGTH, stdin);
     }
     else {
         node->right = saveLastNode;
-    }
-
-    int32_t addToTreeBuffer = 0;
-    assert(addToTreeBuffer =
-            Convert1251ToUtf8((const char*)buffer, (char *)tree->unsavedQuestions + tree->bufLen) != 0);
-
-    for (int32_t curIdx = 0, curLgcNbm = 0; curLgcNbm < curBufLen;) {
-        int8_t* curTreeBufferPointer = tree->unsavedQuestions + tree->bufLen + curIdx;
-
-        if (curLgcNbm == (node->data - (TreeElem)(0))) {
-            node->data = curTreeBufferPointer;
-        }
-        if (curLgcNbm == (node->left->data - (TreeElem)(0))) {
-            node->left->data = curTreeBufferPointer;
-        }
-        if ((tree->root == node) && (curLgcNbm == (node->right->data - (TreeElem)(0)))) {
-            node->right->data = curTreeBufferPointer;
-            break;
-        }
-
-        if ((*curTreeBufferPointer == ' ') ||
-            (*curTreeBufferPointer == '|')) {
-
-            if (*curTreeBufferPointer == '|') *curTreeBufferPointer = '\0';
-            curIdx++;
-        }
-        else {
-            curIdx += 2;
-        }
-        curLgcNbm++;
     }
 
     if (tree->root != node) {
@@ -252,8 +166,6 @@ void AskForNode(Tree* tree, Node* node, Node* preNode) {
             preNode->right = node;
         }
     }
-
-    tree->bufLen += addToTreeBuffer;
 }
 
 int32_t Convert1251ToUtf8 (const char* input, char* output) {
@@ -346,7 +258,7 @@ void GetFinalAnswer(int8_t answerString[]) {
     assert(answerString != nullptr);
 
     while(scanf("%[YN]", answerString) == 0) {
-        txSpeak("\vВведите либо Y, либо N\n");
+        printf("Введите либо Y, либо N\n");
         fflush(stdin);
     }
 }
@@ -355,7 +267,7 @@ void GetGameAnswer(int8_t answerString[]) {
     assert(answerString != nullptr);
 
     while(scanf("%[YNI]", answerString) == 0) {
-        txSpeak("\vВведите либо Y, либо N, либо I\n");
+        printf("Введите либо Y, либо N, либо I\n");
         fflush(stdin);
     }
 }
@@ -544,4 +456,57 @@ void PrintDescriptionComparation(Stack* stack1, Stack* stack2, int8_t person1[],
             StackPushIndexDEVELOPERS_ONLY(biggerStack, (StackElem)nextNode, curIdx + 1);
         }
     }
+}
+
+void PlayDescription(Tree* akinatorTree) {
+    assert(akinatorTree != nullptr);
+
+    txSpeak("\vВведите песонажа, чьё описание вы хотите получить\n");
+    StackCtor(descriptionStack);
+
+    int8_t person[MAX_NODE_DATA_LENGTH]    = "";
+
+    fflush(stdin);
+    MyFGetsForOneItem(person, MAX_NODE_DATA_LENGTH, stdin);
+
+    GiveDescription(akinatorTree->root, person, &descriptionStack);
+    if (StackPop(&descriptionStack) != (StackElem)1) {
+        txSpeak("\vТы ввёл несуществующего персонажа, тупой человек\n");
+    }
+    else {
+        PrintDescription(&descriptionStack, person);
+    }
+
+    StackDtor(&descriptionStack);
+}
+
+void PlayCompartion(Tree* akinatorTree) {
+    assert(akinatorTree != nullptr);
+    
+    txSpeak("\vВведите двух персонажей через enter, чтобы узнать, в чём они похожи, а в чём различны\n");
+    StackCtor(descriptionStack1);
+    StackCtor(descriptionStack2);
+
+    int8_t person1[MAX_NODE_DATA_LENGTH] = "";
+    int8_t person2[MAX_NODE_DATA_LENGTH] = "";
+
+    fflush(stdin);
+    MyFGetsForOneItem(person1, MAX_NODE_DATA_LENGTH, stdin);
+
+    fflush(stdin);
+    MyFGetsForOneItem(person2, MAX_NODE_DATA_LENGTH, stdin);
+
+    GiveDescription(akinatorTree->root, person1, &descriptionStack1);
+    GiveDescription(akinatorTree->root, person2, &descriptionStack2);
+
+    if ((StackPop(&descriptionStack1) != (StackElem)1) ||
+        (StackPop(&descriptionStack2) != (StackElem)1)) {
+        txSpeak("\vКакой-то персонаж, из тех, которые ты ввёл, не существует, мешок костей\n");
+    }
+    else {
+        PrintDescriptionComparation(&descriptionStack1, &descriptionStack2, person1, person2);
+    }
+
+    StackDtor(&descriptionStack1);
+    StackDtor(&descriptionStack2);
 }
