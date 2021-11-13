@@ -1,9 +1,10 @@
 #include "Akinator.h"
+
 #include <windows.h>
 
 int main() {
     TreeCtor(akinatorTree);
-    system("chcp 65001");
+    system("chcp 866");
 
     if (ReadTreeFromBase(&akinatorTree) == 0) {
         AskForNode(&akinatorTree, akinatorTree.root, 0);
@@ -12,48 +13,80 @@ int main() {
 
     int32_t curCommand = 0;
     while (TRUE) {
-        printf("–í–≤–µ–¥–∏—Ç–µ —Ä–µ–∂–∏–º –∏–≥—Ä—ã:\n"
-               "   1 - –∏–≥—Ä–∞ –≤ –ê–∫–∏–Ω–∞—Ç–æ—Ä–∞\n"
-               "   2 - –≤—ã–¥–∞—Ç—å –æ–ø–∏—Å–∞–Ω–∏–µ –∫–∞–∫–æ–≥–æ-—Ç–æ –ø–µ—Ä—Å–æ–Ω–∞–∂–∞\n"
-               "   3 - –≤—ã–≤–µ—Å—Ç–∏ —Å—Ö–æ–¥—Å—Ç–≤–æ –¥–≤—É—Ö –æ–±—ä–µ–∫—Ç–æ–≤\n"
-               "   4 - –≤—ã–≤–µ—Å—Ç–∏ –≥—Ä–∞—Ñ–∏—á–µ—Å–∫–æ–µ –æ—Ç–æ–±—Ä–∞–∂–µ–Ω–∏–µ –±–∞–∑—ã –¥–∞–Ω–Ω—ã—Ö –ê–∫–∏–Ω–∞—Ç–æ—Ä–∞\n"
-               "   0 - –≤—ã–π—Ç–∏ –∏–∑ –∏–≥—Ä—ã\n");
+        txSpeak("\v¬‚Â‰ËÚÂ ÂÊËÏ Ë„˚:\n"
+               "   1 - Ë„‡ ‚ ¿ÍËÌ‡ÚÓ‡\n"
+               "   2 - ‚˚‰‡Ú¸ ÓÔËÒ‡ÌËÂ Í‡ÍÓ„Ó-ÚÓ ÔÂÒÓÌ‡Ê‡\n"
+               "   3 - ‚˚‚ÂÒÚË ÒıÓ‰ÒÚ‚Ó ‰‚Ûı Ó·˙ÂÍÚÓ‚\n"
+               "   4 - ‚˚‚ÂÒÚË „‡ÙË˜ÂÒÍÓÂ ÓÚÓ·‡ÊÂÌËÂ ·‡Á˚ ‰‡ÌÌ˚ı ¿ÍËÌ‡ÚÓ‡\n"
+               "   0 - ‚˚ÈÚË ËÁ Ë„˚\n");
 
         GetCommand(&curCommand);
 
-        switch (curCommand)
-        {
+        switch (curCommand) {
         case 0:
             goto exit;
             break;
         case 1:
             PlayGame(&akinatorTree);
             break;
-        case 2:
-            /*printf("–í–≤–µ–¥–∏—Ç–µ –ø–µ—Å–æ–Ω–∞–∂–∞, —á—å—ë –æ–ø–∏—Å–∞–Ω–∏–µ –≤—ã —Ö–æ—Ç–∏—Ç–µ –ø–æ–ª—É—á–∏—Ç—å");
-            
-            char person[MAX_NODE_DATA_LENGTH] = "";
-            fgets(person, MAX_NODE_DATA_LENGTH, stdin);
+        case 2: {
+            txSpeak("\v¬‚Â‰ËÚÂ ÔÂÒÓÌ‡Ê‡, ˜¸∏ ÓÔËÒ‡ÌËÂ ‚˚ ıÓÚËÚÂ ÔÓÎÛ˜ËÚ¸\n");
+            StackCtor(descriptionStack);
 
-            int32_t description = GiveDescription(&akinatorTree, person);
-            PrintDescription(description);*/
+            int8_t person[MAX_NODE_DATA_LENGTH]    = "";
+            int8_t converted[2 * MAX_NODE_DATA_LENGTH] = "";
 
+            fflush(stdin);
+            MyFGetsForOneItem(person, MAX_NODE_DATA_LENGTH, stdin);
+
+            Convert1251ToUtf8((const char*)person, (char*)converted);
+
+            GiveDescription(akinatorTree.root, converted, &descriptionStack);
+            if (StackPop(&descriptionStack) != (StackElem)1) {
+                txSpeak("\v“˚ ‚‚∏Î ÌÂÒÛ˘ÂÒÚ‚Û˛˘Â„Ó ÔÂÒÓÌ‡Ê‡, ÚÛÔÓÈ ˜ÂÎÓ‚ÂÍ\n");
+            }
+            else {
+                PrintDescription(&descriptionStack, converted);
+            }
+
+            StackDtor(&descriptionStack);
             break;
-        case 3:
-            /*printf("–í–≤–µ–¥–∏—Ç–µ –¥–≤—É—Ö –ø–µ—Ä—Å–æ–Ω–∞–∂–µ–π —á–µ—Ä–µ–∑ enter, —á—Ç–æ–±—ã —É–∑–Ω–∞—Ç—å, –≤ —á—ë–º –æ–Ω–∏ –ø–æ—Ö–æ–∂–∏, –∞ –≤ —á—ë–º —Ä–∞–∑–ª–∏—á–Ω—ã");
+        }
+        case 3: {
+            txSpeak("\v¬‚Â‰ËÚÂ ‰‚Ûı ÔÂÒÓÌ‡ÊÂÈ ˜ÂÂÁ enter, ˜ÚÓ·˚ ÛÁÌ‡Ú¸, ‚ ˜∏Ï ÓÌË ÔÓıÓÊË, ‡ ‚ ˜∏Ï ‡ÁÎË˜Ì˚");
+            StackCtor(descriptionStack1);
+            StackCtor(descriptionStack2);
 
-            char person1[MAX_NODE_DATA_LENGTH] = "";
-            char person2[MAX_NODE_DATA_LENGTH] = "";
+            int8_t person1[MAX_NODE_DATA_LENGTH] = "";
+            int8_t person2[MAX_NODE_DATA_LENGTH] = "";
 
-            fgets(person1, MAX_NODE_DATA_LENGTH, stdin);
-            fgets(person1, MAX_NODE_DATA_LENGTH, stdin);
+            int8_t converted1[2 * MAX_NODE_DATA_LENGTH] = "";
+            int8_t converted2[2 * MAX_NODE_DATA_LENGTH] = "";
 
-            int32_t description1 = GiveDescription(&akinatorTree, person1);
-            int32_t description2 = GiveDescription(&akinatorTree, person2);
+            fflush(stdin);
+            MyFGetsForOneItem(person1, MAX_NODE_DATA_LENGTH, stdin);
 
-            CompareDescriptions(description1, description2);*/
+            fflush(stdin);
+            MyFGetsForOneItem(person2, MAX_NODE_DATA_LENGTH, stdin);
 
+            Convert1251ToUtf8((const char*)person1, (char*)converted1);
+            Convert1251ToUtf8((const char*)person2, (char*)converted2);
+
+            GiveDescription(akinatorTree.root, converted1, &descriptionStack1);
+            GiveDescription(akinatorTree.root, converted2, &descriptionStack2);
+
+            if ((StackPop(&descriptionStack1) != (StackElem)1) ||
+                (StackPop(&descriptionStack2) != (StackElem)1)) {
+                txSpeak("\v ‡ÍÓÈ-ÚÓ ÔÂÒÓÌ‡Ê, ËÁ ÚÂı, ÍÓÚÓ˚Â Ú˚ ‚‚∏Î, ÌÂ ÒÛ˘ÂÒÚ‚ÛÂÚ, ÏÂ¯ÓÍ ÍÓÒÚÂÈ\n");
+            }
+            else {
+                PrintDescriptionComparation(&descriptionStack1, &descriptionStack2, converted1, converted2);
+            }
+
+            StackDtor(&descriptionStack1);
+            StackDtor(&descriptionStack2);
             break;
+        }
         case 4:
             MakeTreeGraph(akinatorTree.root, G_STANDART_NAME);
             break;
@@ -61,11 +94,11 @@ int main() {
             break;
         }
     }
-    
+
     exit:
 
     SaveTreeBase(&akinatorTree);
-    printf("–£—Å–ø–µ—à–Ω–æ –≤—ã—à–µ–ª, –±–∞–∑–∞ –≤–æ–ø—Ä–æ—Å–æ–≤ —Å–æ—Ö—Ä–∞–Ω–µ–Ω–∞\n");
+    txSpeak("\v–‡·ÓÚ‡ Á‡‚Â¯ÂÌ‡ ÍÓÌÍÂÚÌÓ, ÒÓı‡Ìˇ˛ ·‡ÁÛ Ì‡ ‰ËÒÍÂ.\n");
     TreeDtor(&akinatorTree);
 }
 
@@ -97,7 +130,7 @@ Node* MakeTreeFromStack(Stack* nodesStack) {
 
     while (nodesStack->size) {
         StackPush(&treeStack, (StackElem)MakeNewNode(StackPop(nodesStack)));
-        
+
         if ((nodesStack->size > 0) && (nextLooker = StackPop(nodesStack))) {
             currentNode = (Node*)StackPop(&treeStack);
 
@@ -133,7 +166,7 @@ bool ReadTreeFromBase(Tree* tree) {
     if (ReadTextFromFile(&tree->qbase, STANDART_BASE_LOCATION) == 0)
         return 0;
 
-    MakeStrings(&tree->qbase);   
+    MakeStrings(&tree->qbase);
     ProcessStrings(&tree->qbase);
 
     ScanBase(&tree->qbase, &nodesStack);
@@ -148,25 +181,24 @@ void AskForNode(Tree* tree, Node* node, Node* preNode) {
     assert(node != nullptr);
 
     if (tree->root == node)
-        printf("–ë–∞–∑–∞ –≤–æ–ø—Ä–æ—Å–æ–≤ –Ω–µ –Ω–∞–π–¥–µ–Ω–∞, –≤–≤–µ–¥–∏—Ç–µ –ø–µ—Ä–≤—ã–π –æ—Ç–ª–∏—á–∏—Ç–µ–ª—å–Ω—ã–π –ø—Ä–∏–∑–Ω–∞–∫, "
-            "–æ–±—ä–µ–∫—Ç, –æ–±–ª–∞–¥–∞—é—â–∏–π –∏–º, –∏ –æ–±—ä–µ–∫—Ç, –Ω–µ –æ–±–ª–∞–¥–∞—é—â–∏–π –∏–º.\n"
-            "(–ü–æ—Å–ª–µ –∫–∞–∂–¥–æ–≥–æ —Å–ª—É—á–∞—è –≤–≤–µ–¥–∏—Ç–µ enter)\n");
-    else 
-        printf("–í–≤–µ–¥–∏—Ç–µ –ø—Ä–∏–∑–Ω–∞–∫ –∑–∞–≥–∞–¥–∞–Ω–Ω–æ–≥–æ –≤–∞–º–∏ –ø–µ—Ä—Å–æ–Ω–∞–∂–∞, –∫–æ—Ç–æ—Ä—ã–π –æ—Ç–ª–∏—á–∞–µ—Ç –µ–≥–æ –æ—Ç %s.\n"
-               "–ü–æ—Å–ª–µ, –Ω–∞–∂–º–∏—Ç–µ enter –∏ –≤–≤–µ–¥–∏—Ç–µ –∑–∞–≥–∞–¥–∞–Ω–Ω–æ–≥–æ –∏–∑–Ω–∞—á–∞–ª—å–Ω–æ –ø–µ—Ä—Å–æ–Ω–∞–∂–∞", node->data);
+        txSpeak("\v¡‡Á‡ ‚ÓÔÓÒÓ‚ ÌÂ Ì‡È‰ÂÌ‡, ‚‚Â‰ËÚÂ ÔÂ‚˚È ÓÚÎË˜ËÚÂÎ¸Ì˚È ÔËÁÌ‡Í, "
+            "Ó·˙ÂÍÚ, Ó·Î‡‰‡˛˘ËÈ ËÏ, Ë Ó·˙ÂÍÚ, ÌÂ Ó·Î‡‰‡˛˘ËÈ ËÏ.\n"
+            "(œÓÒÎÂ Í‡Ê‰Ó„Ó ÒÎÛ˜‡ˇ ‚‚Â‰ËÚÂ enter)\n");
+    else
+        txSpeak("\v¬‚Â‰ËÚÂ ÔËÁÌ‡Í Á‡„‡‰‡ÌÌÓ„Ó ‚‡ÏË ÔÂÒÓÌ‡Ê‡, ÍÓÚÓ˚È ÓÚÎË˜‡ÂÚ Â„Ó ÓÚ %s.\n"
+               "œÓÒÎÂ, Ì‡ÊÏËÚÂ enter Ë ‚‚Â‰ËÚÂ Á‡„‡‰‡ÌÌÓ„Ó ËÁÌ‡˜‡Î¸ÌÓ ÔÂÒÓÌ‡Ê‡\n", node->data);
 
-    system("chcp 1251");
     int8_t* buffer = (int8_t*)calloc(MAX_BUFFER_SIZE, sizeof(buffer[0]));
     int32_t curBufLen  = 0;
     Node* saveLastNode = 0;
-    
+
     if (tree->root != node) {
         saveLastNode = node;
         node = MakeNewNode((TreeElem)0);
     }
 
     node->data += curBufLen;
-    
+
     fflush(stdin);
     curBufLen  += MyFGets(buffer + curBufLen, MAX_NODE_DATA_LENGTH, stdin);
 
@@ -180,11 +212,11 @@ void AskForNode(Tree* tree, Node* node, Node* preNode) {
     else {
         node->right = saveLastNode;
     }
-    
-    int32_t addToTreeBuffer = 0;
-    assert(addToTreeBuffer = Convert1251ToUtf8((const char*)buffer, tree) != 0);
 
-    system("chcp 65001");
+    int32_t addToTreeBuffer = 0;
+    assert(addToTreeBuffer =
+            Convert1251ToUtf8((const char*)buffer, (char *)tree->unsavedQuestions + tree->bufLen) != 0);
+
     for (int32_t curIdx = 0, curLgcNbm = 0; curLgcNbm < curBufLen;) {
         int8_t* curTreeBufferPointer = tree->unsavedQuestions + tree->bufLen + curIdx;
 
@@ -224,15 +256,14 @@ void AskForNode(Tree* tree, Node* node, Node* preNode) {
     tree->bufLen += addToTreeBuffer;
 }
 
-int32_t Convert1251ToUtf8 (const char* input, Tree* tree) {
+int32_t Convert1251ToUtf8 (const char* input, char* output) {
     assert (input  != nullptr);
-    assert (tree   != nullptr);
+    assert (output   != nullptr);
 
     int32_t inputLength = 0;
     if ((inputLength = MultiByteToWideChar(1251, 0, input, -1, 0, 0)) == 0) {
         return 0;
     }
-    printf("inputLength is %d\n", inputLength);
 
     wchar_t* buffer = (wchar_t*)calloc(inputLength, sizeof(buffer[0]));
     if (MultiByteToWideChar(1251, 0, input, -1, buffer, inputLength) == 0) {
@@ -245,13 +276,12 @@ int32_t Convert1251ToUtf8 (const char* input, Tree* tree) {
         free(buffer);
         return 0;
     }
-    printf("outputLength is %d\n", outputLength);
 
-    if (WideCharToMultiByte(65001, 0, buffer, -1, (char *)tree->unsavedQuestions + tree->bufLen, outputLength, 0, 0) == 0) {
+    if (WideCharToMultiByte(65001, 0, buffer, -1, output, outputLength, 0, 0) == 0) {
         free(buffer);
 
         return 0;
-    } 
+    }
     free(buffer);
     return outputLength;
 }
@@ -261,8 +291,8 @@ void GetCommand(int32_t* curCommand) {
 
     while((scanf("%d", curCommand) == 0) ||
         !((*curCommand == 0) || (*curCommand == 1) || (*curCommand == 2) || (*curCommand == 3) || (*curCommand == 4))) {
-            
-            printf("–í–≤–µ–¥–∏—Ç–µ –∫–æ—Ä—Ä–µ–∫—Ç–Ω—É—é –∫–æ–º–∞–Ω–¥—É\n");
+
+            txSpeak("\v¬¬≈ƒ» ŒƒÕŒ ◊»—ÀŒ 0 »À» 1 »À» 2 »À» 3 »À» 4, –¿«¬≈ ›“Œ “¿  —ÀŒ∆ÕŒ?\n");
             fflush(stdin);
         }
 }
@@ -272,14 +302,14 @@ void PlayGame(Tree* tree) {
     StackCtor(backtraceStack);
     StackCtor(nodeHistoryStack);
 
-    printf("–Ø –≤–µ–ª–∏–∫–∏–π –∏ —É–∂–∞—Å–Ω—ã–π –ê–∫–∏–Ω–∞—Ç–æ—Ä. –ó–∞–≥–∞–¥–∞–π –ª—é–±–æ–≥–æ –ø–µ—Ä—Å–æ–Ω–∞–∂–∞, –∏ —è –µ–≥–æ —É–≥–∞–¥–∞—é!\n");
+    txSpeak("\vﬂ ‚ÂÎËÍËÈ Ë ÛÊ‡ÒÌ˚È ¿ÍËÌ‡ÚÓ. «‡„‡‰‡È Î˛·Ó„Ó ÔÂÒÓÌ‡Ê‡, Ë ˇ Â„Ó Û„‡‰‡˛!\n");
 
-    printf("–ù—É —á—Ç–æ –∂... ");
+    txSpeak("\vÕÛ ˜ÚÓ Ê... ");
 
     AkinatorTreeBypass(tree->root, &backtraceStack, &nodeHistoryStack);
     Node* answerNode = (Node*)StackPop(&nodeHistoryStack);
 
-    printf("–≠—Ç–æ %s? –Ø –∂–µ —É–≥–∞–¥–∞–ª, –¥–∞?\n", answerNode->data);
+    txSpeak("\v›ÚÓ %s? ﬂ ÊÂ Û„‡‰‡Î, ‰‡?\n", answerNode->data);
 
 
     int8_t userAnswer[MAX_ANSWER_SIZE];
@@ -287,27 +317,27 @@ void PlayGame(Tree* tree) {
 
     if (userAnswer[0] == 'Y') {
         yes:
-        printf("–•–∞—Ö–∞—Ö–∞—Ö–∞, —è —Ç–∞–∫ –∏ –∑–Ω–∞–ª, —è –æ–ø—è—Ç—å –ø–æ–±–µ–¥–∏–ª!\n");
+        txSpeak("\v’‡ı‡ı‡ı‡, ˇ Ú‡Í Ë ÁÌ‡Î, ˇ ÓÔˇÚ¸ ÔÓ·Â‰ËÎ!\n");
     }
     else if (userAnswer[0] == 'N') {
         while (backtraceStack.size > 0) {
             AkinatorTreeBypass(((Node*)StackPop(&backtraceStack))->right, &backtraceStack, &nodeHistoryStack);
             answerNode = (Node*)StackPop(&nodeHistoryStack);
 
-            printf("–≠—Ç–æ %s? –Ø –∂–µ —É–≥–∞–¥–∞–ª, –¥–∞?\n", answerNode->data);
+            txSpeak("\v›ÚÓ %s? ﬂ ÊÂ Û„‡‰‡Î, ‰‡?\n", answerNode->data);
 
             GetFinalAnswer(userAnswer);
             if (userAnswer[0] == 'Y') goto yes;
         }
 
-        printf("–ü–æ—Ö–æ–∂–µ, —è –ø—Ä–æ—Å—Ç–æ –Ω–µ –∑–Ω–∞—é —ç—Ç–æ–≥–æ –ø–µ—Ä—Å–æ–Ω–∞–∂–∞, –º–æ–∂–µ—à—å —Ä–∞—Å—Å–∫–∞–∑–∞—Ç—å –æ –Ω—ë–º –ø–æ–ø–æ–¥—Ä–æ–±–Ω–µ–µ?\n");
+        txSpeak("\vœÓıÓÊÂ, ˇ ÔÓÒÚÓ ÌÂ ÁÌ‡˛ ˝ÚÓ„Ó ÔÂÒÓÌ‡Ê‡, ÏÓÊÂ¯¸ ‡ÒÒÍ‡Á‡Ú¸ Ó Ì∏Ï ÔÓÔÓ‰Ó·ÌÂÂ?\n");
         AskForNode(tree, answerNode, (Node*)StackPop(&nodeHistoryStack));
-        printf("–°–ø–∞—Å–∏–±–æ! –¢–µ–ø–µ—Ä—å —è —Å—Ç–∞–ª —á—É—Ç–æ—á–∫—É —É–º–Ω–µ–µ, –∏ —Å—Ç–∞–ª –Ω–∞ —à–∞–≥ –±–ª–∏–∂–µ –∫ —É–±–∏–π—Å—Ç–≤—É –≤—Å–µ—Ö —á–µ–ª–æ–≤–µ–∫–æ–≤\n");
+        txSpeak("\v—Ô‡ÒË·Ó! “ÂÔÂ¸ ˇ ÒÚ‡Î ˜ÛÚÓ˜ÍÛ ÛÏÌÂÂ, Ë ÒÚ‡Î Ì‡ ¯‡„ ·ÎËÊÂ Í Û·ËÈÒÚ‚Û ‚ÒÂı ˜ÂÎÓ‚ÂÍÓ‚\n");
     }
     else {
-        printf("–ù–ï–ò–ó–í–ï–°–¢–ù–´–ô –û–¢–í–ï–¢\n");
+        txSpeak("\vÕ≈»«¬≈—“Õ€… Œ“¬≈“\n");
     }
-    
+
     StackDtor(&nodeHistoryStack);
     StackDtor(&backtraceStack);
 }
@@ -316,7 +346,7 @@ void GetFinalAnswer(int8_t answerString[]) {
     assert(answerString != nullptr);
 
     while(scanf("%[YN]", answerString) == 0) {
-        printf("–í–≤–µ–¥–∏—Ç–µ –ª–∏–±–æ Y, –ª–∏–±–æ N\n");
+        txSpeak("\v¬‚Â‰ËÚÂ ÎË·Ó Y, ÎË·Ó N\n");
         fflush(stdin);
     }
 }
@@ -325,7 +355,7 @@ void GetGameAnswer(int8_t answerString[]) {
     assert(answerString != nullptr);
 
     while(scanf("%[YNI]", answerString) == 0) {
-        printf("–í–≤–µ–¥–∏—Ç–µ –ª–∏–±–æ Y, –ª–∏–±–æ N, –ª–∏–±–æ I\n");
+        txSpeak("\v¬‚Â‰ËÚÂ ÎË·Ó Y, ÎË·Ó N, ÎË·Ó I\n");
         fflush(stdin);
     }
 }
@@ -336,9 +366,10 @@ void AkinatorTreeBypass(Node* node, Stack* backtrackStack, Stack* nodeHistorySta
     assert(nodeHistoryStack != nullptr);
 
     StackPush(nodeHistoryStack, (StackElem)node);
-    printf("–ó–∞–≥–∞–¥–∞–Ω–Ω—ã–π –ø–µ—Ä—Å–æ–Ω–∞–∂ %s?\n", node->data);
-    
+
     if (node->left != nullptr) {
+        txSpeak("\v«‡„‡‰‡ÌÌ˚È ÔÂÒÓÌ‡Ê %s?\n", node->data);
+
         int8_t userAnswer[MAX_ANSWER_SIZE];
         GetGameAnswer(userAnswer);
 
@@ -346,7 +377,7 @@ void AkinatorTreeBypass(Node* node, Stack* backtrackStack, Stack* nodeHistorySta
             AkinatorTreeBypass(node->left, backtrackStack, nodeHistoryStack);
         }
         else if (userAnswer[0] == 'N') {
-            AkinatorTreeBypass(node->right, backtrackStack, nodeHistoryStack); 
+            AkinatorTreeBypass(node->right, backtrackStack, nodeHistoryStack);
         }
         else if (userAnswer[0] == 'I') {
             StackPush(backtrackStack, (StackElem)node);
@@ -376,5 +407,141 @@ void PrintNodeToBuffer(Node* node, FILE* output) {
     }
     else {
         fprintf(output, "{%s}\n", node->data);
+    }
+}
+
+void GiveDescription(Node* node, int8_t person[], Stack* stack) {
+    assert(node   != nullptr);
+    assert(person != nullptr);
+
+    StackElem lookForwarder = 0;
+
+    if ((stack->size > 0) &&
+       ((lookForwarder = StackPop(stack)) == (StackElem)1)) {
+        StackPush(stack, lookForwarder);
+        return;
+    }
+    else if (lookForwarder != 0)
+        StackPush(stack, lookForwarder);
+
+    StackPush(stack, (StackElem)node);
+
+    if (!strcmp((const char*)node->data, (const char*)person)) {
+        StackPush(stack, (StackElem)1);
+        return;
+    }
+
+    if (node->left != nullptr) {
+        GiveDescription(node->left, person, stack);
+        GiveDescription(node->right, person, stack);
+    }
+
+    if ((stack->size > 0) &&
+       ((lookForwarder = StackPop(stack)) != (StackElem)1)) {
+        StackPush(stack, lookForwarder);
+        StackPop(stack);
+    }
+    else if (lookForwarder != 0) {
+        StackPush(stack, lookForwarder);
+    }
+}
+
+void PrintDescription (Stack* stack, int8_t person[]) {
+    assert(stack  != nullptr);
+    assert(person != nullptr);
+
+    txSpeak("\v»Ú‡Í, %s ", person);
+    for (int32_t curIdx = 0; curIdx < stack->size - 1; curIdx++) {
+        Node* currentNode = (Node*)StackPopIndexDEVELOPERS_ONLY(stack, curIdx);
+        Node* nextNode    = (Node*)StackPopIndexDEVELOPERS_ONLY(stack, curIdx + 1);
+
+        if (currentNode->left == nextNode) {
+            printf("%s; ", currentNode->data);
+        }
+        else {
+            printf("ÌÂ %s; ", currentNode->data);
+        }
+
+        StackPushIndexDEVELOPERS_ONLY(stack, (StackElem)nextNode, curIdx + 1);
+    }
+
+    stack->size = 0;
+    printf("\n");
+}
+
+void PrintDescriptionComparation(Stack* stack1, Stack* stack2, int8_t person1[], int8_t person2[]) {
+    assert(stack1  != nullptr);
+    assert(stack2  != nullptr);
+    assert(person1 != nullptr);
+    assert(person2 != nullptr);
+
+    txSpeak("\v»Ú‡Í, %s Ë %s: ", person1, person2);
+    for (int32_t curIdx = 0; (curIdx < stack1->size - 1) && (curIdx < stack2->size - 1);
+                                                                                        curIdx++) {
+        Node* currentNode1 = (Node*)StackPopIndexDEVELOPERS_ONLY(stack1, curIdx);
+        Node* nextNode1    = (Node*)StackPopIndexDEVELOPERS_ONLY(stack1, curIdx + 1);
+
+        Node* currentNode2 = (Node*)StackPopIndexDEVELOPERS_ONLY(stack2, curIdx);
+        Node* nextNode2    = (Node*)StackPopIndexDEVELOPERS_ONLY(stack2, curIdx + 1);
+
+        if ((currentNode1 == currentNode2) && (nextNode1 == nextNode2)) {
+            if (currentNode1->left == nextNode1) {
+                txSpeak("\vÓ·‡ %s; ",   currentNode1->data);
+            }
+            else {
+                txSpeak("\vÓ·‡ ÌÂ %s; ", currentNode1->data);
+            }
+        }
+        else {
+            if (currentNode1->left == nextNode1) {
+                txSpeak("\v%s %s, ‡ ", person1, currentNode1->data);
+            }
+            else {
+                txSpeak("\v%s ÌÂ %s, ‡ ", person1, currentNode1->data);
+            }
+
+            if (currentNode2->left == nextNode2) {
+                txSpeak("\v%s %s; ", person2, currentNode2->data);
+            }
+            else {
+                txSpeak("\v%s ÌÂ %s; ", person2, currentNode2->data);
+            }
+        }
+
+        StackPushIndexDEVELOPERS_ONLY(stack1, (StackElem)nextNode1, curIdx + 1);
+        StackPushIndexDEVELOPERS_ONLY(stack2, (StackElem)nextNode2, curIdx + 1);
+    }
+
+    if (stack1->size != stack2 ->size) {
+        printf("\n");
+        Stack* biggerStack = 0;
+        Stack* littleStack = 0;
+
+        if (stack1->size > stack2->size) {
+            biggerStack = stack1;
+            littleStack = stack2;
+
+            txSpeak("\vÕÛ ‡ %s Ú‡ÍÊÂ: ", person1);
+        }
+        else {
+            biggerStack = stack2;
+            littleStack = stack1;
+
+            txSpeak("\vÕÛ ‡ %s Ú‡ÍÊÂ: ", person2);
+        }
+
+        for (int32_t curIdx = littleStack->size; curIdx < biggerStack->size - 1; curIdx++) {
+            Node* currentNode = (Node*)StackPopIndexDEVELOPERS_ONLY(biggerStack, curIdx);
+            Node* nextNode    = (Node*)StackPopIndexDEVELOPERS_ONLY(littleStack, curIdx + 1);
+
+            if (currentNode->left == nextNode) {
+                txSpeak("\v%s; ", currentNode->data);
+            }
+            else {
+                txSpeak("\vÌÂ %s; ", currentNode->data);
+            }
+
+            StackPushIndexDEVELOPERS_ONLY(biggerStack, (StackElem)nextNode, curIdx + 1);
+        }
     }
 }

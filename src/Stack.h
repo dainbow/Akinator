@@ -67,7 +67,7 @@ const float INCREASE_MULTIPLIER = 1.5;
 const float DECREASE_MULTIPLIER = 2;
 
 enum StackError {
-    NO_ERROR = 0,
+    NO_ANY_ERROR = 0,
     STACK_OVERFLOW,
     STACK_UNDERFLOW,
     CAPACITY_NEGATIVE,
@@ -157,6 +157,8 @@ int32_t StackPush(Stack* stack, StackElem pushedValue);
 //! @return StackElem  - popped value
 //-------------------------------------------------------------------------------------------
 
+int32_t StackPushIndexDEVELOPERS_ONLY(Stack* stack, StackElem pushedValue, int32_t index);
+
 StackElem StackPop(Stack* stack);
 
 //-------------------------------------------------------------------------------------------
@@ -168,6 +170,8 @@ StackElem StackPop(Stack* stack);
 //!
 //! @note Returns NO_ERROR if stack is OK (For all check functions)
 //-------------------------------------------------------------------------------------------
+
+StackElem StackPopIndexDEVELOPERS_ONLY(Stack* stack, int32_t index);
 
 StackError IsStackOk(Stack* stack);
 

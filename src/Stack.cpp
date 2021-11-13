@@ -7,7 +7,7 @@ int32_t StackCtor_(Stack* stack, VarInfo creationInfo) {
     stack->size         = 0;
 
     #if (STACK_DEBUG >= LOW_LEVEL)
-    stack->creationInfo = creationInfo;
+        stack->creationInfo = creationInfo;
     #endif
 
     uint64_t sizeOfData           = stack->capacity * sizeof(StackElem);
@@ -69,6 +69,15 @@ int32_t StackPush(Stack* stack, StackElem pushedValue) {
     return 0;
 }
 
+int32_t StackPushIndexDEVELOPERS_ONLY(Stack* stack, StackElem pushedValue, int32_t index) {
+    CheckAllStack(stack);
+
+    *(StackElem*)(stack->data + (index) * sizeof(StackElem)) = pushedValue;
+
+    CheckAllStack(stack);
+    return 0;
+}
+
 StackElem StackPop(Stack* stack) {
     CheckAllStack(stack);
 
@@ -89,31 +98,41 @@ StackElem StackPop(Stack* stack) {
     return poppedValue;
 }
 
+StackElem StackPopIndexDEVELOPERS_ONLY(Stack* stack, int32_t index) {
+    CheckAllStack(stack);
+
+    StackElem poppedValue = *(StackElem*)(stack->data + index * sizeof(StackElem));
+    *(StackElem*)(stack->data + index * sizeof(StackElem)) = (StackElem)POISON;
+
+    CheckAllStack(stack);
+    return poppedValue;
+}
+
 StackError IsStackOk(Stack* stack) {
     if (stack == nullptr)                               return STACK_NULL;
 
-    return NO_ERROR;
+    return NO_ANY_ERROR;
 }
 
 StackError IsDataOk(Stack* stack) {
     if (stack->data - SHIFT == nullptr)                 return  DATA_NULL;
     if (stack->data - SHIFT == (uint8_t*)FREE_VALUE)    return STACK_FREE;
 
-    return NO_ERROR;
+    return NO_ANY_ERROR;
 }
 
 StackError IsCapacityOk(Stack* stack) {
     if (stack->capacity < 0)             return CAPACITY_NEGATIVE;
     if (!isfinite(stack->capacity))      return CAPACITY_INFINITE;
 
-    return NO_ERROR;
+    return NO_ANY_ERROR;
 }
 
 StackError IsSizeOk(Stack* stack) {
     if (stack->size > stack->capacity)   return STACK_OVERFLOW;
     if (stack->size < 0)                 return STACK_UNDERFLOW;
 
-    return NO_ERROR;
+    return NO_ANY_ERROR;
 }
 
 StackError IsCanariesOk(Stack* stack) {
@@ -126,7 +145,7 @@ StackError IsCanariesOk(Stack* stack) {
     if (*(canary*)(stack->data - SHIFT)      != CANARY) return LEFT_DATA_CANARY_IRRUPTION;
     if (*(canary*)(stack->data + sizeOfData) != CANARY) return RIGHT_DATA_CANARY_IRRUPTION;
 
-    return NO_ERROR;
+    return NO_ANY_ERROR;
 }
 
 StackError IsHashesOk(Stack* stack) {
@@ -136,7 +155,7 @@ StackError IsHashesOk(Stack* stack) {
     if (GetStackHash(stack) != stackHash) return STACK_HASH_IRRUPTION;
     if (GetDataHash(stack)  != dataHash)  return DATA_HASH_IRRUPTION;
 
-    return NO_ERROR;
+    return NO_ANY_ERROR;
 }
 
 StackError IsAllOk(Stack* stack) {
@@ -153,7 +172,7 @@ StackError IsAllOk(Stack* stack) {
     if (StackError error =  IsHashesOk(stack))   return error;
     #endif
 
-    return NO_ERROR;
+    return NO_ANY_ERROR;
 }
 
 hashValue GetHash(uint8_t* pointer, uint64_t size) {
@@ -274,7 +293,7 @@ int StackDump(Stack* stack, VarInfo dumpInfo, FILE* outstream) {
 
 const char* ErrorToString(StackError error) {
     switch(error) {
-        case NO_ERROR:                      return "Ok";
+        case NO_ANY_ERROR:                      return "Ok";
         case STACK_OVERFLOW:                return "OVERFLOW";
         case STACK_UNDERFLOW:               return "UNDERFLOW";
         case CAPACITY_NEGATIVE:             return "NEGATIVE CAPACITY";

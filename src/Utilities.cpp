@@ -86,3 +86,18 @@ uint32_t MyFGets(int8_t buffer[], int32_t bufSize, FILE* stream) {
 
     return charsAmount;
 }
+
+uint32_t MyFGetsForOneItem(int8_t buffer[], int32_t bufSize, FILE* stream) {
+    assert(buffer != nullptr);
+
+    int8_t  curChar     = 0;
+    int32_t charsAmount = 0;
+    
+    while(((curChar = (int8_t)fgetc(stream)) != '\n') &&
+          (charsAmount < bufSize - 1)) {
+        buffer[charsAmount++] = curChar;
+    }
+    buffer[charsAmount++] = '\0';
+
+    return charsAmount;
+}

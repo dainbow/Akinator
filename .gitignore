@@ -1,5 +1,8 @@
 graphs
 
+*.log
+*.dmp
+
 # Prerequisites
 *.d
 

@@ -50,5 +50,6 @@ size_t strLenWithoutSpaces(char* countingString);
 bool MyLblCmp(const int8_t* str1, const int8_t* str2);
 
 uint32_t MyFGets(int8_t buffer[], int32_t bufSize, FILE* stream);
+uint32_t MyFGetsForOneItem(int8_t buffer[], int32_t bufSize, FILE* stream);
 
 #endif

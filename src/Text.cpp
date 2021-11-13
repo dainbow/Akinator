@@ -18,7 +18,7 @@ bool ReadTextFromFile(Text *text, const char* inputFile) {
         return 0;
 
     text->bufSize = CountFileSize(input);
-    text->buffer = (int8_t*)calloc(text->bufSize + 1, sizeof(text->buffer[0]));
+    text->buffer = (int8_t*)calloc(text->bufSize + 10, sizeof(text->buffer[0]));
     assert(text->buffer != nullptr);
 
     read(input, text->buffer, (uint32_t)text->bufSize);
@@ -31,7 +31,7 @@ void CountStrAmount(struct Text *text) {
     assert(text != nullptr);
 
     uint32_t strCount = 0;
-
+    
     for (uint32_t curChr = 0; curChr < (text->bufSize); curChr++) {
         if (text->buffer[curChr] == '\n') {
             strCount++;
@@ -43,7 +43,7 @@ void CountStrAmount(struct Text *text) {
 void FillStrings(struct Text *text) {
     assert(text != nullptr);
 	
-	text->strings = (String*)calloc(text->strAmount + 1, sizeof(text->strings[0]));
+    text->strings = (String*)calloc(text->strAmount + 10, sizeof(text->strings[0]));
     assert(text->strings != nullptr);
 
     text->strings[0].value = &text->buffer[0];
