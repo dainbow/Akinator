@@ -368,10 +368,10 @@ void PrintDescription (Stack* stack, int8_t person[]) {
         Node* nextNode    = (Node*)StackPopIndexDEVELOPERS_ONLY(stack, curIdx + 1);
 
         if (currentNode->left == nextNode) {
-            printf("%s; ", currentNode->data);
+            txSpeak("\v%s; ", currentNode->data);
         }
         else {
-            printf("не %s; ", currentNode->data);
+            txSpeak("\vне %s; ", currentNode->data);
         }
 
         StackPushIndexDEVELOPERS_ONLY(stack, (StackElem)nextNode, curIdx + 1);
@@ -442,9 +442,9 @@ void PrintDescriptionComparation(Stack* stack1, Stack* stack2, int8_t person1[],
             txSpeak("\vНу а %s также: ", person2);
         }
 
-        for (int32_t curIdx = littleStack->size; curIdx < biggerStack->size - 1; curIdx++) {
+        for (int32_t curIdx = littleStack->size - 1; curIdx < biggerStack->size - 1; curIdx++) {
             Node* currentNode = (Node*)StackPopIndexDEVELOPERS_ONLY(biggerStack, curIdx);
-            Node* nextNode    = (Node*)StackPopIndexDEVELOPERS_ONLY(littleStack, curIdx + 1);
+            Node* nextNode    = (Node*)StackPopIndexDEVELOPERS_ONLY(biggerStack, curIdx + 1);
 
             if (currentNode->left == nextNode) {
                 txSpeak("\v%s; ", currentNode->data);
@@ -470,10 +470,12 @@ void PlayDescription(Tree* akinatorTree) {
     MyFGetsForOneItem(person, MAX_NODE_DATA_LENGTH, stdin);
 
     GiveDescription(akinatorTree->root, person, &descriptionStack);
-    if (StackPop(&descriptionStack) != (StackElem)1) {
+    if (descriptionStack.size == 0) {
         txSpeak("\vТы ввёл несуществующего персонажа, тупой человек\n");
     }
     else {
+        StackPop(&descriptionStack);
+
         PrintDescription(&descriptionStack, person);
     }
 
@@ -499,11 +501,14 @@ void PlayCompartion(Tree* akinatorTree) {
     GiveDescription(akinatorTree->root, person1, &descriptionStack1);
     GiveDescription(akinatorTree->root, person2, &descriptionStack2);
 
-    if ((StackPop(&descriptionStack1) != (StackElem)1) ||
-        (StackPop(&descriptionStack2) != (StackElem)1)) {
+    if ((descriptionStack1.size == 0) ||
+        (descriptionStack2.size == 0)) {
         txSpeak("\vКакой-то персонаж, из тех, которые ты ввёл, не существует, мешок костей\n");
     }
     else {
+        StackPop(&descriptionStack1);
+        StackPop(&descriptionStack2);
+
         PrintDescriptionComparation(&descriptionStack1, &descriptionStack2, person1, person2);
     }
 

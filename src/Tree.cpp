@@ -87,9 +87,9 @@ void PrintTreeNodes(Node* root, FILE* output) {
 
         curRecursionDepth += 1;
 
-        fprintf(output, "\t\t%lld: <l%d> -> %lld;\n", 
+        fprintf(output, "\t\t%lld: <l%d> -> %lld[label = \"Да\"];\n", 
                 root - pointerAnchor, curNodeNumber, root->left  - pointerAnchor);
-        fprintf(output, "\t\t%lld: <r%d> -> %lld;\n", 
+        fprintf(output, "\t\t%lld: <r%d> -> %lld[label = \"Нет\"];\n", 
                 root - pointerAnchor, curNodeNumber, root->right - pointerAnchor);
 
         PrintTreeNodes(root->left, output);
