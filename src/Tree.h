@@ -10,7 +10,7 @@
 typedef int8_t* TreeElem;
 #define TREE_TYPE "%s"
 
-#define _ENABLE_PTR_ADRESSES_VIEW_ 0
+#define _ENABLE_PTR_ADRESSES_VIEW_ 1
 
 #if (_ENABLE_PTR_ADRESSES_VIEW_ == 1)
     #define LEFT_BRANCH  "%lld"

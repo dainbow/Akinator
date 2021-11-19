@@ -15,7 +15,11 @@ void TreeCtor_(Tree* tree) {
 void TreeDtor(Tree* tree) {
     assert(tree != nullptr);
 
-    tree->qbase = {};
+    free(tree->unsavedQuestions);
+
+    tree->qbase  = {};
+    tree->bufLen = 0;
+
     NodeDtor(tree->root);
 }
 

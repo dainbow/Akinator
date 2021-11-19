@@ -35,6 +35,8 @@
         assert(!"OK" && "Verify failed");                                                     \
     }
 
+#include "Tree.h"
+
 typedef uint32_t canary;
 typedef uint64_t hashValue;
 
@@ -56,7 +58,7 @@ const char NAME_OF_STACK_TYPE[] = "int8_t*";
     const uint32_t PROTECTION_SIZE = 0;
 #endif
 
-const uint32_t POISON     = 0xE2202;
+const uint32_t POISON     = 7;
 const canary CANARY       = 0xDEAD;
 const uint32_t FREE_VALUE = 0xF2EE;
 

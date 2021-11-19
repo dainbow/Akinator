@@ -34,6 +34,6 @@ void AkinatorTreeBypass(Node* node, Stack* backtrackStack, Stack* nodeHistorySta
 void SaveTreeBase(Tree* tree);
 void PrintNodeToBuffer(Node* node, FILE* output);
 
-void GiveDescription(Node* node, int8_t person[], Stack* stack);
+void GiveDescription(Node* node, int8_t person[], Stack* stack, bool *isFoundFlag);
 void PrintDescription (Stack* stack, int8_t person[]);
 void PrintDescriptionComparation(Stack* stack1, Stack* stack2, int8_t person1[], int8_t person2[]);
