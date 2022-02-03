@@ -9,16 +9,16 @@ int main() {
 
     TreeCtor(akinatorTree);
     if (ReadTreeFromBase(&akinatorTree) == 0) {
-            AskForNode(&akinatorTree, akinatorTree.root, 0);
+        AskForNode(&akinatorTree, akinatorTree.root, 0);
     }
 
     while (loop) {
-        printf("Введите режим игры:\n"
-               "   1 - игра в Акинатора\n"
-               "   2 - выдать описание какого-то персонажа\n"
-               "   3 - вывести сходство двух объектов\n"
-               "   4 - вывести графическое отображение базы данных Акинатора\n"
-               "   0 - выйти из игры\n");
+        printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ:\n"
+               "   1 - пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n"
+               "   2 - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n"
+               "   3 - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n"
+               "   4 - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n"
+               "   0 - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ\n");
 
         int32_t curCommand = 0;
         GetCommand(&curCommand);
@@ -131,11 +131,11 @@ void AskForNode(Tree* tree, Node* node, Node* preNode) {
     assert(node != nullptr);
 
     if (tree->root == node)
-        printf("База вопросов не найдена, введите первый отличительный признак, "
-            "объект, обладающий им, и объект, не обладающий им.\n"
-            "(После каждого случая введите enter)\n");
+        printf("пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, "
+            "пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ.\n"
+            "(пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ enter)\n");
     else
-        printf("Введите загаданного вами персонажа\n");
+        printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n");
 
     Node* saveLastNode = 0;
     if (tree->root != node) {
@@ -147,7 +147,7 @@ void AskForNode(Tree* tree, Node* node, Node* preNode) {
     node->left     = MakeNewNode((TreeElem)(tree->unsavedQuestions + tree->bufLen));
     tree->bufLen  += MyFGetsForOneItem(tree->unsavedQuestions + tree->bufLen, MAX_NODE_DATA_LENGTH, stdin);
 
-    printf("Что отличает %s от %s\n", node->left->data, saveLastNode->data);
+    printf("пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ %s пїЅпїЅ %s\n", node->left->data, saveLastNode->data);
     fflush(stdin);
     node->data     = tree->unsavedQuestions + tree->bufLen;
     tree->bufLen  += MyFGetsForOneItem(tree->unsavedQuestions + tree->bufLen, MAX_NODE_DATA_LENGTH, stdin);
@@ -207,7 +207,7 @@ void GetCommand(int32_t* curCommand) {
     while((scanf("%d", curCommand) == 0) ||
         !((*curCommand == 0) || (*curCommand == 1) || (*curCommand == 2) || (*curCommand == 3) || (*curCommand == 4))) {
 
-            printf("ВВЕДИ ОДНО ЧИСЛО 0 ИЛИ 1 ИЛИ 2 ИЛИ 3 ИЛИ 4, РАЗВЕ ЭТО ТАК СЛОЖНО?\n");
+            printf("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 0 пїЅпїЅпїЅ 1 пїЅпїЅпїЅ 2 пїЅпїЅпїЅ 3 пїЅпїЅпїЅ 4, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ?\n");
             fflush(stdin);
         }
 }
@@ -217,14 +217,14 @@ void PlayGame(Tree* tree) {
     StackCtor(backtraceStack);
     StackCtor(nodeHistoryStack);
 
-    printf("Я великий и ужасный Акинатор. Загадай любого персонажа, и я его угадаю!\n");
+    printf("пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!\n");
 
-    printf("Ну что ж... ");
+    printf("пїЅпїЅ пїЅпїЅпїЅ пїЅ... ");
 
     AkinatorTreeBypass(tree->root, &backtraceStack, &nodeHistoryStack);
     Node* answerNode = (Node*)StackPop(&nodeHistoryStack);
 
-    printf("Это %s? Я же угадал, да?\n", answerNode->data);
+    printf("пїЅпїЅпїЅ %s? пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ?\n", answerNode->data);
 
 
     int8_t userAnswer[MAX_ANSWER_SIZE];
@@ -232,25 +232,25 @@ void PlayGame(Tree* tree) {
 
     if (userAnswer[0] == 'Y') {
         yes:
-        printf("Хахахаха, я так и знал, я опять победил!\n");
+        printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!\n");
     }
     else if (userAnswer[0] == 'N') {
         while (backtraceStack.size > 0) {
             AkinatorTreeBypass(((Node*)StackPop(&backtraceStack))->right, &backtraceStack, &nodeHistoryStack);
             answerNode = (Node*)StackPop(&nodeHistoryStack);
 
-            printf("Это %s? Я же угадал, да?\n", answerNode->data);
+            printf("пїЅпїЅпїЅ %s? пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ?\n", answerNode->data);
 
             GetFinalAnswer(userAnswer);
             if (userAnswer[0] == 'Y') goto yes;
         }
 
-        printf("Похоже, я просто не знаю этого персонажа, можешь рассказать о нём поподробнее?\n");
+        printf("пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?\n");
         AskForNode(tree, answerNode, (Node*)StackPop(&nodeHistoryStack));
-        printf("Спасибо! Теперь я стал чуточку умнее, и стал на шаг ближе к убийству всех человеков\n");
+        printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n");
     }
     else {
-        printf("НЕИЗВЕСТНЫЙ ОТВЕТ\n");
+        printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ\n");
     }
 
     StackDtor(&nodeHistoryStack);
@@ -261,7 +261,7 @@ void GetFinalAnswer(int8_t answerString[]) {
     assert(answerString != nullptr);
 
     while(scanf("%[YN]", answerString) == 0) {
-        printf("Введите либо Y, либо N\n");
+        printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ Y, пїЅпїЅпїЅпїЅ N\n");
         fflush(stdin);
     }
 }
@@ -270,7 +270,7 @@ void GetGameAnswer(int8_t answerString[]) {
     assert(answerString != nullptr);
 
     while(scanf("%[YNI]", answerString) == 0) {
-        printf("Введите либо Y, либо N, либо I\n");
+        printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ Y, пїЅпїЅпїЅпїЅ N, пїЅпїЅпїЅпїЅ I\n");
         fflush(stdin);
     }
 }
@@ -283,7 +283,7 @@ void AkinatorTreeBypass(Node* node, Stack* backtrackStack, Stack* nodeHistorySta
     StackPush(nodeHistoryStack, (StackElem)node);
 
     if (node->left != nullptr) {
-        printf("Загаданный персонаж %s?\n", node->data);
+        printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ %s?\n", node->data);
 
         int8_t userAnswer[MAX_ANSWER_SIZE];
         GetGameAnswer(userAnswer);
@@ -329,18 +329,12 @@ void GiveDescription(Node* node, int8_t person[], Stack* stack, bool *isFoundFla
     assert(node   != nullptr);
     assert(person != nullptr);
 
-    //printf("Opened [%p] with left [%p] and right [%p]\n", node, node->left, node->right);
     if (*isFoundFlag) {
         return;
     }
     else {
         StackPush(stack, (StackElem)node);
     }
-
-    /*for (int32_t curIdx = 0; curIdx < stack->size; curIdx++) {
-        printf("[%d: %p] ", curIdx, *(StackElem*)(stack->data + curIdx * sizeof(StackElem)));
-    }
-    printf("\n"); */
 
     if (!strcmp((const char*)node->data, (const char*)person)) {
         *isFoundFlag = 1; 
@@ -349,18 +343,12 @@ void GiveDescription(Node* node, int8_t person[], Stack* stack, bool *isFoundFla
 
     if ((node->left  != nullptr) &&
         (node->right != nullptr)) {
-        //printf("Starting a recursion with left [%p] and right [%p]\n", node->left, node->right);
         GiveDescription(node->left,  person, stack, isFoundFlag);
         GiveDescription(node->right, person, stack, isFoundFlag);
     }
 
     if (!(*isFoundFlag)) {
         StackPop(stack);
-
-        /*for (int32_t curIdx = 0; curIdx < stack->size; curIdx++) {
-            printf("[%d: %p] ", curIdx, *(StackElem*)(stack->data + curIdx * sizeof(StackElem)));
-        }
-        printf("\n"); */
     }
 }
 
@@ -368,7 +356,7 @@ void PrintDescription (Stack* stack, int8_t person[]) {
     assert(stack  != nullptr);
     assert(person != nullptr);
 
-    printf("Итак, %s ", person);
+    printf("пїЅпїЅпїЅпїЅ, %s ", person);
     for (int32_t curIdx = 0; curIdx < stack->size - 1; curIdx++) {
         Node* currentNode = (Node*)StackPopIndexDEVELOPERS_ONLY(stack, curIdx);
         Node* nextNode    = (Node*)StackPopIndexDEVELOPERS_ONLY(stack, curIdx + 1);
@@ -377,7 +365,7 @@ void PrintDescription (Stack* stack, int8_t person[]) {
             printf("%s; ", currentNode->data);
         }
         else {
-            printf("не %s; ", currentNode->data);
+            printf("пїЅпїЅ %s; ", currentNode->data);
         }
 
         StackPushIndexDEVELOPERS_ONLY(stack, (StackElem)nextNode, curIdx + 1);
@@ -393,44 +381,36 @@ void PrintDescriptionComparation(Stack* stack1, Stack* stack2, int8_t person1[],
     assert(person1 != nullptr);
     assert(person2 != nullptr);
 
-    printf("Итак, %s и %s: ", person1, person2);
+    printf("пїЅпїЅпїЅпїЅ, %s пїЅ %s: ", person1, person2);
     for (int32_t curIdx = 0; (curIdx < stack1->size - 1) && (curIdx < stack2->size - 1);
                                                                                         curIdx++) {
         Node* currentNode1 = (Node*)StackPopIndexDEVELOPERS_ONLY(stack1, curIdx);
-        //printf("Popped [%p]", currentNode1);
-        //printf(" with data [%p]\n", currentNode1->data);
         Node* nextNode1    = (Node*)StackPopIndexDEVELOPERS_ONLY(stack1, curIdx + 1);
-        //printf("Popped [%p]", nextNode1); 
-        //printf(" with data [%p]\n", nextNode1->data);
 
         Node* currentNode2 = (Node*)StackPopIndexDEVELOPERS_ONLY(stack2, curIdx);
-        //printf("Popped [%p]", currentNode2); 
-        //printf(" with data [%p]\n", currentNode2->data);
         Node* nextNode2    = (Node*)StackPopIndexDEVELOPERS_ONLY(stack2, curIdx + 1);
-        //printf("Popped [%p]", nextNode2); 
-        //printf(" with data [%p]\n", nextNode2 ->data);
 
         if ((currentNode1 == currentNode2) && (nextNode1 == nextNode2)) {
             if (currentNode1->left == nextNode1) {
-                printf("оба %s; ",   currentNode1->data);
+                printf("пїЅпїЅпїЅ %s; ",   currentNode1->data);
             }
             else {
-                printf("оба не %s; ", currentNode1->data);
+                printf("пїЅпїЅпїЅ пїЅпїЅ %s; ", currentNode1->data);
             }
         }
         else {
             if (currentNode1->left == nextNode1) {
-                printf("%s %s, а ", person1, currentNode1->data);
+                printf("%s %s, пїЅ ", person1, currentNode1->data);
             }
             else {
-                printf("%s не %s, а ", person1, currentNode1->data);
+                printf("%s пїЅпїЅ %s, пїЅ ", person1, currentNode1->data);
             }
 
             if (currentNode2->left == nextNode2) {
                 printf("%s %s; ", person2, currentNode2->data);
             }
             else {
-                printf("%s не %s; ", person2, currentNode2->data);
+                printf("%s пїЅпїЅ %s; ", person2, currentNode2->data);
             }
         }
 
@@ -447,13 +427,13 @@ void PrintDescriptionComparation(Stack* stack1, Stack* stack2, int8_t person1[],
             biggerStack = stack1;
             littleStack = stack2;
 
-            printf("Ну а %s также: ", person1);
+            printf("пїЅпїЅ пїЅ %s пїЅпїЅпїЅпїЅпїЅ: ", person1);
         }
         else {
             biggerStack = stack2;
             littleStack = stack1;
 
-            printf("Ну а %s также: ", person2);
+            printf("пїЅпїЅ пїЅ %s пїЅпїЅпїЅпїЅпїЅ: ", person2);
         }
 
         for (int32_t curIdx = littleStack->size - 1; curIdx < biggerStack->size - 1; curIdx++) {
@@ -464,7 +444,7 @@ void PrintDescriptionComparation(Stack* stack1, Stack* stack2, int8_t person1[],
                 printf("%s; ", currentNode->data);
             }
             else {
-                printf("не %s; ", currentNode->data);
+                printf("пїЅпїЅ %s; ", currentNode->data);
             }
 
             StackPushIndexDEVELOPERS_ONLY(biggerStack, (StackElem)nextNode, curIdx + 1);
@@ -479,7 +459,7 @@ void PrintDescriptionComparation(Stack* stack1, Stack* stack2, int8_t person1[],
 void PlayDescription(Tree* akinatorTree) {
     assert(akinatorTree != nullptr);
 
-    printf("Введите песонажа, чьё описание вы хотите получить\n");
+    printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n");
     StackCtor(descriptionStack);
     bool flag = 0;
 
@@ -490,7 +470,7 @@ void PlayDescription(Tree* akinatorTree) {
 
     GiveDescription(akinatorTree->root, person, &descriptionStack, &flag);
     if (!flag) {
-        printf("Ты ввёл несуществующего персонажа, тупой человек\n");
+        printf("пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n");
     }
     else {
         PrintDescription(&descriptionStack, person);
@@ -502,7 +482,7 @@ void PlayDescription(Tree* akinatorTree) {
 void PlayCompartion(Tree* akinatorTree) {
     assert(akinatorTree != nullptr);
     
-    printf("Введите двух персонажей через enter, чтобы узнать, в чём они похожи, а в чём различны\n");
+    printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ enter, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n");
     StackCtor(descriptionStack1);
     StackCtor(descriptionStack2);
 
@@ -514,16 +494,14 @@ void PlayCompartion(Tree* akinatorTree) {
 
     fflush(stdin);
     MyFGetsForOneItem(person1, MAX_NODE_DATA_LENGTH, stdin);
-    //MakeTreeGraph(akinatorTree->root, G_STANDART_NAME);
     GiveDescription(akinatorTree->root, person1, &descriptionStack1, &flag1);
 
     fflush(stdin);
     MyFGetsForOneItem(person2, MAX_NODE_DATA_LENGTH, stdin);
-    //MakeTreeGraph(akinatorTree->root, G_STANDART_NAME);
     GiveDescription(akinatorTree->root, person2, &descriptionStack2, &flag2);
 
     if (!flag1 || !flag2) {
-        printf("Какой-то персонаж, из тех, которые ты ввёл, не существует, мешок костей\n");
+        printf("пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ\n");
     }
     else {
         PrintDescriptionComparation(&descriptionStack1, &descriptionStack2, person1, person2);

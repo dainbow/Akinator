@@ -81,8 +81,8 @@ int32_t StackPushIndexDEVELOPERS_ONLY(Stack* stack, StackElem pushedValue, int32
 StackElem StackPop(Stack* stack) {
     CheckAllStack(stack);
 
-    if (stack->capacity >= (int32_t)DECREASE_MULTIPLIER * stack->size)
-        stack->data      = StackDecrease(stack);
+    /*if (stack->capacity >= (int32_t)DECREASE_MULTIPLIER * stack->size)
+        stack->data      = StackDecrease(stack);*/
 
     assert(stack->size  != 0 && "STACK_UNDERFLOW");
 
